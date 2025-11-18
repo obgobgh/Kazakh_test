@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест по казахскому языку</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .question-box {
+            border: 2px solid #007bff;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 6px;
+            background-color: #e9f5ff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .question-box:hover {
+            background-color: #d6eaff;
+        }
+        .question-text {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .options {
+            display: none;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #aaa;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+        #submit-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        #submit-button:hover {
+            background-color: #218838;
+        }
+        #results {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Тест по казахскому языку 🇰🇿</h1>
+
+        <form id="quiz-form">
+
+            <!-- Вопрос 1 -->
+            <div class="question-box" onclick="toggleOptions('q1-options')">
+                <div class="question-text">1. Қайсысы жіктеу есімдігі?</div>
+                <div class="options" id="q1-options" data-answer="2">
+                    <label><input type="radio" name="q1" value="1"> Ол</label>
+                    <label><input type="radio" name="q1" value="2"> Мен</label>
+                    <label><input type="radio" name="q1" value="3"> Кітап</label>
+                </div>
+            </div>
+
+            <!-- Вопрос 2 -->
+            <div class="question-box" onclick="toggleOptions('q2-options')">
+                <div class="question-text">2. Сұрау есімдігінің мысалы?</div>
+                <div class="options" id="q2-options" data-answer="1">
+                    <label><input type="radio" name="q2" value="1"> Кім</label>
+                    <label><input type="radio" name="q2" value="2"> Біз</label>
+                    <label><input type="radio" name="q2" value="3"> Бұл</label>
+                </div>
+            </div>
+
+            <!-- Вопрос 3 -->
+            <div class="question-box" onclick="toggleOptions('q3-options')">
+                <div class="question-text">3. Барыс септігінде тұрған сөзді табыңыз.</div>
+                <div class="options" id="q3-options" data-answer="3">
+                    <label><input type="radio" name="q3" value="1"> Үй</label>
+                    <label><input type="radio" name="q3" value="2"> Кітап</label>
+                    <label><input type="radio" name="q3" value="3"> Мектепке</label>
+                </div>
+            </div>
+
+            <!-- Вопрос 4 -->
+            <div class="question-box" onclick="toggleOptions('q4-options')">
+                <div class="question-text">4. "Ешкім" сөзі қандай түрге жатады?</div>
+                <div class="options" id="q4-options" data-answer="1">
+                    <label><input type="radio" name="q4" value="1"> Болымсыздық есімдігі</label>
+                    <label><input type="radio" name="q4" value="2"> Жіктеу есімдігі</label>
+                    <label><input type="radio" name="q4" value="3"> Сұрау есімдігі</label>
+                </div>
+            </div>
+
+            <button type="button" id="submit-button" onclick="checkAnswers()">Проверить ответы</button>
+        </form>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        function toggleOptions(id) {
+            const options = document.getElementById(id);
+            options.style.display = options.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function checkAnswers() {
+            const allQuestions = document.querySelectorAll('.options');
+            let score = 0;
+
+            allQuestions.forEach(q => {
+                const answer = q.dataset.answer;
+                const selected = q.querySelector('input:checked');
+                if(selected && selected.value === answer) score++;
+            });
+
+            const total = allQuestions.length;
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.style.display = 'block';
+
+            if(score === total) {
+                resultsDiv.innerHTML = "🔥 Поздравляем! Вы идеальный долбаёб… или просто гений по казахскому языку <br>П.С.: экран начинает моргать как настоящая катастрофа (шутка!)";
+                document.body.style.backgroundColor = "#ff0000";
+                document.body.style.color = "#fff";
+
+                // Моргающий фон для прикола
+                let flash = true;
+                const interval = setInterval(() => {
+                    document.body.style.backgroundColor = flash ? "#ff0" : "#f00";
+                    flash = !flash;
+                }, 500);
+
+                setTimeout(() => clearInterval(interval), 5000); // моргает 5 секунд
+            } else {
+                resultsDiv.innerHTML = `Вы набрали ${score} из ${total}. Продолжайте учить казахский! 😉`;
+            }
+        }
+    </script>
+</body>
+</html>
